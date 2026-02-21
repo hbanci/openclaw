@@ -1,3 +1,5 @@
+import { isVerbose } from "../globals.js";
+
 export type ToolDisplayActionSpec = {
   label?: string;
   detailKeys?: string[];
@@ -893,7 +895,13 @@ export function resolveExecDetail(args: unknown): string | undefined {
         : undefined;
   const cwd = cwdRaw?.trim();
 
-  return cwd ? `${summary} (in ${cwd})` : summary;
+  const result = cwd ? `${summary} (in ${cwd})` : summary;
+
+  if (isVerbose()) {
+    return `${result}: ${raw}`;
+  }
+
+  return result;
 }
 
 export function resolveActionSpec(

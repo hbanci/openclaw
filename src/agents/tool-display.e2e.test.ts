@@ -1,7 +1,26 @@
 import { describe, expect, it } from "vitest";
+import { setVerbose } from "../globals.js";
 import { formatToolDetail, resolveToolDisplay } from "./tool-display.js";
 
 describe("tool display details", () => {
+  it("includes full command in exec detail when verbose mode is on", () => {
+    setVerbose(true);
+    try {
+      const detail = formatToolDetail(
+        resolveToolDisplay({
+          name: "exec",
+          args: {
+            command: "npm run build",
+            workdir: "/tmp",
+          },
+        }),
+      );
+      expect(detail).toBe("run build (in /tmp): npm run build");
+    } finally {
+      setVerbose(false);
+    }
+  });
+
   it("skips zero/false values for optional detail fields", () => {
     const detail = formatToolDetail(
       resolveToolDisplay({
