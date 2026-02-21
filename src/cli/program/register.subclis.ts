@@ -37,6 +37,15 @@ const loadConfig = async (): Promise<OpenClawConfig> => {
 // and set the flag accordingly.
 const entries: SubCliEntry[] = [
   {
+    name: "tool",
+    description: "Manage and execute agent tools locally",
+    hasSubcommands: true,
+    register: async (program) => {
+      const mod = await import("../tool-cli.js");
+      mod.registerToolCli(program);
+    },
+  },
+  {
     name: "acp",
     description: "Agent Control Protocol tools",
     hasSubcommands: true,
